@@ -9,14 +9,16 @@
     
     var activeThemeContentFilePath = AppPath.Join(GeneralSettings.WebThemesPath, ThemeSettings.ActiveName, RenderingSettings.ContentFileName);
     var defaultThemeContentFilePath = AppPath.Join(GeneralSettings.WebThemesPath, ThemeSettings.DefaultName, RenderingSettings.ContentFileName);
-
+    
     var activeThemeHeaderFilePath = AppPath.Join(GeneralSettings.WebThemesPath, ThemeSettings.ActiveName, RenderingSettings.HeaderContentFileName);
     var defaultThemeHeaderFilePath = AppPath.Join(GeneralSettings.WebThemesPath, ThemeSettings.DefaultName, RenderingSettings.HeaderContentFileName);
+
+    var activeThemeFooterFilePath = AppPath.Join(GeneralSettings.WebThemesPath, ThemeSettings.ActiveName, RenderingSettings.FooterContentFileName);
+    var defaultThemeFooterFilePath = AppPath.Join(GeneralSettings.WebThemesPath, ThemeSettings.DefaultName, RenderingSettings.FooterContentFileName);
 }
 
 <html>
     <head>
-        <link rel="stylesheet" href="~/static/custom/lib/Negatronic/Css/NegatronicAdamantica.css" />
 
         @{ 
             await Html.RenderActiveOrDefaultAsync(activeThemeHeadContentFilePath, defaultThemeHeadContentFilePath);
@@ -24,21 +26,23 @@
     </head>
 
     <body>
-        <div id="header">
+        <header>
             @{
                 await Html.RenderActiveOrDefaultAsync(activeThemeHeaderFilePath, defaultThemeHeaderFilePath);
             }
-        </div>
+        </header>
 
-        <div id="content">
+        <main>
             @{
                 await Html.RenderActiveOrDefaultAsync(activeThemeContentFilePath, defaultThemeContentFilePath);
             }
-        </div>
+        </main>
 
-        <div id="footer">
-
-        </div>
+        <footer>
+            @{
+                await Html.RenderActiveOrDefaultAsync(activeThemeFooterFilePath, defaultThemeFooterFilePath);
+            }
+        </footer>
 
     </body>
 
