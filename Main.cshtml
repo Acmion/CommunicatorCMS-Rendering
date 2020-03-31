@@ -1,50 +1,56 @@
-﻿@using CommunicatorCms.Core.Settings;
+﻿@using CommunicatorCms.Core;
+@using CommunicatorCms.Core.Settings;
 @using CommunicatorCms.Core.Extensions;
 @using CommunicatorCms.Core.AppFileSystem;
 
+@inject RequestState RequestState;
+
 @{
-    var tellMemOr2 = 00;
     var activeThemeHeadContentFilePath = AppPath.Join(GeneralSettings.WebThemesPath, ThemeSettings.ActiveName, RenderingSettings.HeadContentFileName);
     var defaultThemeHeadContentFilePath = AppPath.Join(GeneralSettings.WebThemesPath, ThemeSettings.DefaultName, RenderingSettings.HeadContentFileName);
-    
+
     var activeThemeContentFilePath = AppPath.Join(GeneralSettings.WebThemesPath, ThemeSettings.ActiveName, RenderingSettings.ContentFileName);
     var defaultThemeContentFilePath = AppPath.Join(GeneralSettings.WebThemesPath, ThemeSettings.DefaultName, RenderingSettings.ContentFileName);
-    
+
     var activeThemeHeaderFilePath = AppPath.Join(GeneralSettings.WebThemesPath, ThemeSettings.ActiveName, RenderingSettings.HeaderContentFileName);
     var defaultThemeHeaderFilePath = AppPath.Join(GeneralSettings.WebThemesPath, ThemeSettings.DefaultName, RenderingSettings.HeaderContentFileName);
 
     var activeThemeFooterFilePath = AppPath.Join(GeneralSettings.WebThemesPath, ThemeSettings.ActiveName, RenderingSettings.FooterContentFileName);
     var defaultThemeFooterFilePath = AppPath.Join(GeneralSettings.WebThemesPath, ThemeSettings.DefaultName, RenderingSettings.FooterContentFileName);
+
+    var headContent = await SourcePage.LoadPageFromAppPath(GeneralSettings.WebHeadPath);
 }
 
 <html>
-    <head>
+<head>
 
-        @{ 
-            await Html.RenderActiveOrDefaultAsync(activeThemeHeadContentFilePath, defaultThemeHeadContentFilePath);
+    @{
+        await Html.RenderActiveOrDefaultAsync(activeThemeHeadContentFilePath, defaultThemeHeadContentFilePath);
+
+        await headContent.Render(this, this.Html);
+    }
+</head>
+
+<body>
+    <header>
+        @{
+            await Html.RenderActiveOrDefaultAsync(activeThemeHeaderFilePath, defaultThemeHeaderFilePath);
         }
-    </head>
+    </header>
 
-    <body>
-        <header>
-            @{
-                await Html.RenderActiveOrDefaultAsync(activeThemeHeaderFilePath, defaultThemeHeaderFilePath);
-            }
-        </header>
+    <main>
+        @{
+            await Html.RenderActiveOrDefaultAsync(activeThemeContentFilePath, defaultThemeContentFilePath);
+        }
+    </main>
 
-        <main>
-            @{
-                await Html.RenderActiveOrDefaultAsync(activeThemeContentFilePath, defaultThemeContentFilePath);
-            }
-        </main>
+    <footer>
+        @{
+            await Html.RenderActiveOrDefaultAsync(activeThemeFooterFilePath, defaultThemeFooterFilePath);
+        }
+    </footer>
 
-        <footer>
-            @{
-                await Html.RenderActiveOrDefaultAsync(activeThemeFooterFilePath, defaultThemeFooterFilePath);
-            }
-        </footer>
-
-    </body>
+</body>
 
 </html>
 
