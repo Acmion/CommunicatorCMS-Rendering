@@ -3,7 +3,7 @@
 @using CommunicatorCms.Core.AppFileSystem;
 
 @{
-
+    var tellMemOr = 00;
     var activeThemeHeadContentFilePath = AppPath.Join(GeneralSettings.WebThemesPath, ThemeSettings.ActiveName, RenderingSettings.HeadContentFileName);
     var defaultThemeHeadContentFilePath = AppPath.Join(GeneralSettings.WebThemesPath, ThemeSettings.DefaultName, RenderingSettings.HeadContentFileName);
     
