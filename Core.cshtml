@@ -39,8 +39,6 @@
 @{
     var t = this.GetType().BaseType;
 
-    RequestState.HttpRequest = Request;
-
     if (AppExtensionHandler.ExtensionCount == 0)
     {
         AppExtensionHandler.LoadAppExtensions(Html);
