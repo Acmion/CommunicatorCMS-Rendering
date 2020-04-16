@@ -1,0 +1,56 @@
+﻿@using CommunicatorCms.Core;
+@using CommunicatorCms.Core.Settings;
+@using CommunicatorCms.Core.Extensions;
+@using CommunicatorCms.Core.AppFileSystem;
+
+@inject RequestState RequestState;
+
+@{
+    var activeThemeHeadContentFileUrl = AppUrl.Join(UrlSettings.ThemesRootUrl, ThemeSettings.ActiveName, RenderingSettings.HeadFileName);
+    var defaultThemeHeadContentFileUrl = AppUrl.Join(UrlSettings.ThemesRootUrl, ThemeSettings.DefaultName, RenderingSettings.HeadFileName);
+
+    var activeThemeContentFileUrl = AppUrl.Join(UrlSettings.ThemesRootUrl, ThemeSettings.ActiveName, RenderingSettings.ContentFileName);
+    var defaultThemeContentFileUrl = AppUrl.Join(UrlSettings.ThemesRootUrl, ThemeSettings.DefaultName, RenderingSettings.ContentFileName);
+
+    var activeThemeHeaderFileUrl = AppUrl.Join(UrlSettings.ThemesRootUrl, ThemeSettings.ActiveName, RenderingSettings.HeaderFileName);
+    var defaultThemeHeaderFileUrl = AppUrl.Join(UrlSettings.ThemesRootUrl, ThemeSettings.DefaultName, RenderingSettings.HeaderFileName);
+
+    var activeThemeFooterFileUrl = AppUrl.Join(UrlSettings.ThemesRootUrl, ThemeSettings.ActiveName, RenderingSettings.FooterFileName);
+    var defaultThemeFooterFileUrl = AppUrl.Join(UrlSettings.ThemesRootUrl, ThemeSettings.DefaultName, RenderingSettings.FooterFileName);
+
+    var headContent = await SourcePage.LoadPageFromUrl(AppUrl.Join(UrlSettings.GeneralRootUrl, "head"));
+}
+
+<html>
+<head>
+
+    @{
+        await Html.RenderActiveOrDefaultAsyncFromUrl(activeThemeHeadContentFileUrl, defaultThemeHeadContentFileUrl);
+
+        await headContent.Render(this, this.Html);
+    }
+</head>
+
+<body>
+    <header>
+        @{
+            await Html.RenderActiveOrDefaultAsyncFromUrl(activeThemeHeaderFileUrl, defaultThemeHeaderFileUrl);
+        }
+    </header>
+
+    <main>
+        @{
+            await Html.RenderActiveOrDefaultAsyncFromUrl(activeThemeContentFileUrl, defaultThemeContentFileUrl);
+        }
+    </main>
+
+    <footer>
+        @{
+            await Html.RenderActiveOrDefaultAsyncFromUrl(activeThemeFooterFileUrl, defaultThemeFooterFileUrl);
+        }
+    </footer>
+
+</body>
+
+</html>
+

@@ -1,0 +1,53 @@
+﻿@page
+
+@using Microsoft.AspNetCore.Html;
+@using System.Diagnostics;
+@using CommunicatorCms;
+@using CommunicatorCms.Core;
+@using CommunicatorCms.Core.Extensions;
+@using CommunicatorCms.Core.AppExtensions;
+@using CommunicatorCms.Core.Settings;
+@using CommunicatorCms.Core.AppFileSystem;
+@using System.IO;
+
+@inject RequestState RequestState;
+
+@{
+    var t = this.GetType().BaseType;
+
+    if (AppExtensionHandler.ExtensionCount == 0)
+    {
+        AppExtensionHandler.LoadAppExtensions(Html);
+    }
+
+    AppExtensionHandler.OnRequestStart(RequestState);
+
+    var currentPage = await RequestState.GetCurrentPage();
+    var sps = await currentPage.GetSubPages();
+
+    var activeThemeCoreRenderingFileUrl = AppUrl.Join(UrlSettings.ThemesRootUrl, ThemeSettings.ActiveName, RenderingSettings.InitializerFileName);
+    var defaultThemeCoreRenderingFileUrl = AppUrl.Join(UrlSettings.ThemesRootUrl, ThemeSettings.DefaultName, RenderingSettings.InitializerFileName);
+
+    var renderingResource = Request.Query[QuerySettings.RenderingResourceParameter];
+    var renderingResourceUrl = AppUrl.Join(UrlSettings.RenderingRootUrl, renderingResource);
+
+    if (AppUrl.Exists(activeThemeCoreRenderingFileUrl))
+    {
+        await Html.RenderPartialAsyncFromUrl(activeThemeCoreRenderingFileUrl);
+    }
+    else if (AppUrl.Exists(defaultThemeCoreRenderingFileUrl))
+    {
+        await Html.RenderPartialAsyncFromUrl(defaultThemeCoreRenderingFileUrl);
+    }
+
+    if (AppUrl.Exists(renderingResourceUrl))
+    {
+        await Html.RenderPartialAsyncFromUrl(renderingResourceUrl);
+    }
+    else 
+    {
+        <p>No render resoucer</p>
+    }
+}
+
+
